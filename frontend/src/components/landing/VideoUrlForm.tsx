@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { analyzeVideo } from "@/services/youtube";
 import { isValidYouTubeUrl } from "@/utils/validation";
 import { useState } from "react";
 
@@ -6,18 +7,17 @@ function VideoUrlForm() {
   const [videoUrl, setVideoUrl] = useState("");
   const [error, setError] = useState("");
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
     const isValid = isValidYouTubeUrl(videoUrl);
 
     if (!isValid) {
       setError("Please enter a valid YouTube video URL.");
       return;
     }
-
     setError("");
-    console.log(videoUrl);
+    const result = await analyzeVideo(videoUrl);
+    console.log("Video analysis result:", result);
   }
 
   return (
