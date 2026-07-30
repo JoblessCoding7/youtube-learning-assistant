@@ -4,6 +4,7 @@ import {
   ListChecks,
   type LucideIcon,
 } from "lucide-react";
+import FeatureCard from "./FeatureCard";
 
 type Feature = {
   title: string;
@@ -39,28 +40,14 @@ function FeatureSection() {
         Key features
       </h2>
 
-      {features.map((feature) => {
-        const Icon = feature.icon;
-
-        return (
-          <article
-            key={feature.title}
-            className="rounded-[1.25rem] border border-slate-200/80 bg-white/80 p-6 shadow-sm backdrop-blur"
-          >
-            <div className="mb-4 inline-flex rounded-2xl bg-indigo-50 p-3 text-indigo-600">
-              <Icon className="size-6" />
-            </div>
-
-            <h3 className="text-xl font-semibold text-slate-950">
-              {feature.title}
-            </h3>
-
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              {feature.description}
-            </p>
-          </article>
-        );
-      })}
+      {features.map((feature) => (
+        <FeatureCard
+          key={feature.title}
+          title={feature.title}
+          description={feature.description}
+          icon={feature.icon}
+        />
+      ))}
     </section>
   );
 }
