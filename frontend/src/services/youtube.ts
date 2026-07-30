@@ -1,8 +1,17 @@
 export async function analyzeVideo(videoUrl: string) {
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  const response = await fetch("http://localhost:3000/api/analyze", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      videoUrl,
+    }),
+  });
 
-  return {
-    videoUrl,
-    status: "pending",
-  };
+  if (!response.ok) {
+    throw new Error("Failed to analyze video");
+  }
+
+  return response.json();
 }
