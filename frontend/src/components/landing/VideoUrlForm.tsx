@@ -6,18 +6,26 @@ import { useState } from "react";
 function VideoUrlForm() {
   const [videoUrl, setVideoUrl] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const isValid = isValidYouTubeUrl(videoUrl);
+    
 
     if (!isValid) {
       setError("Please enter a valid YouTube video URL.");
       return;
     }
     setError("");
-    const result = await analyzeVideo(videoUrl);
-    console.log("Video analysis result:", result);
+
+    try {
+      setIsLoading(true);
+      const analysisResult = await analyzeVideo(videoUrl);
+      console.log("Video analysis result:", analysisResult);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -49,8 +57,8 @@ function VideoUrlForm() {
         {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
       </div>
 
-      <Button type="submit" size="lg" className="h-12 px-6 text-base shadow-sm">
-        Analyze Video
+      <Button type="submit" size="lg" disabled={isLoading} className="h-12 px-6 text-base shadow-sm">
+        {isLoading ? "Analyzing..." : "Analyze Video"}
       </Button>
     </form>
   );
