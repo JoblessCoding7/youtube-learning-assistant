@@ -1,11 +1,10 @@
 import express from "express";
+import router from "./routes/index.js";
+
 const app = express();
 
 const PORT = 3000;
-
-app.get("/", (req, res) => {
-  res.send("Backend is running");
-});
+app.use("/", router);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
