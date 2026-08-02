@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import {
+  extractVideoId,
   isValidYouTubeUrl,
   normalizeUrl,
 } from "../utils/youtube.js";
@@ -26,10 +27,20 @@ analysisRouter.post("/analyze", (req, res) => {
     });
   }
 
+  const videoId = extractVideoId(normalizedUrl);
+
+  if (!videoId) {
+    return res.status(400).json({
+      success: false,
+      message: "Unable to extract the YouTube video ID.",
+    });
+  }
+
   return res.status(200).json({
     success: true,
     message: "Video URL received.",
     videoUrl: normalizedUrl,
+    videoId,
     status: "pending",
   });
 });
