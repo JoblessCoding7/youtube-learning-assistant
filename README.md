@@ -1,82 +1,198 @@
-# AI YouTube Learning Assistant
+# YouTube Learning Assistant
 
-An AI-powered learning application that helps users understand long-form
-YouTube videos through summaries, timestamp-based question answering, key
-topics, and interactive study tools.
+An AI-powered web application that transforms YouTube videos into structured learning materials.
 
-## Project Status
+Users simply paste a YouTube URL, and the application retrieves the video's transcript, laying the foundation for AI-generated summaries, question answering, quizzes, and other learning experiences.
 
-🚧 Under active development
+> **Status:** 🚧 In Active Development
 
-The current milestone focuses on building the frontend foundation with React
-and TypeScript.
+---
 
-## Planned Features
+## Features
 
-- Analyze a YouTube video from its URL
-- Generate a structured video summary
-- Ask questions about the video content
-- Find relevant timestamps
-- Extract key topics
-- Generate flashcards and quizzes
-- Save personal study notes
+### ✅ Implemented
 
-## Technology Stack
+* Modern React + TypeScript frontend
+* Express + TypeScript backend
+* YouTube URL normalization
+* YouTube URL validation
+* Video ID extraction
+* Transcript retrieval from YouTube
+* REST API architecture
+* Modular service-based backend structure
+
+### 🚧 Planned
+
+* AI-generated summaries
+* Interactive AI chat about video content
+* Quiz generation
+* Key topics extraction
+* Timestamp navigation
+* Learning notes export
+
+---
+
+## Tech Stack
 
 ### Frontend
 
-- React
-- TypeScript
-- Vite
-- ESLint
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* shadcn/ui
 
-### Planned Backend
+### Backend
 
-- Node.js
-- Express
-- AI model API
-- SQLite or PostgreSQL
+* Node.js
+* Express
+* TypeScript
 
-### Engineering Workflow
+### External Services
 
-- GitHub Issues for feature planning
-- Feature branches and pull requests
-- GitHub Copilot-assisted implementation
-- Human review of AI-generated code
-- Automated testing and continuous integration
+* youtube-transcript
 
-## Repository Structure
+---
+
+## Project Structure
 
 ```text
-youtube-learning-assistant/
-├── frontend/       # React and TypeScript client
-├── backend/        # Backend service, planned
-├── docs/           # Architecture and development documentation
-└── README.md
+youtube-learning-assistant
+├── frontend/
+│   ├── src/
+│   └── ...
+│
+└── backend/
+    ├── src/
+    │   ├── routes/
+    │   ├── services/
+    │   ├── utils/
+    │   └── server.ts
+    └── ...
+```
 
-AI-Assisted Development
+---
 
-GitHub Copilot is used to assist with implementation, refactoring, test
-generation, and code review. All generated code is reviewed and validated
-before being committed.
+## API Flow
 
-Getting Started
+```text
+User
+ │
+ ▼
 Frontend
+ │
+ ▼
+POST /api/analyze
+ │
+ ▼
+Normalize URL
+ │
+ ▼
+Validate URL
+ │
+ ▼
+Extract Video ID
+ │
+ ▼
+Retrieve Transcript
+ │
+ ▼
+Return JSON Response
+```
+
+---
+
+## API Example
+
+### Request
+
+```http
+POST /api/analyze
+Content-Type: application/json
+```
+
+```json
+{
+  "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+}
+```
+
+### Response
+
+```json
+{
+  "success": true,
+  "videoId": "dQw4w9WgXcQ",
+  "transcript": [
+    {
+      "text": "Hello everyone...",
+      "offset": 0,
+      "duration": 2.4
+    }
+  ]
+}
+```
+
+---
+
+## Development Roadmap
+
+* [x] Project initialization
+* [x] Backend setup
+* [x] Express API
+* [x] Route refactoring
+* [x] URL validation
+* [x] Video ID extraction
+* [x] Transcript retrieval
+* [ ] AI summarization
+* [ ] AI chat
+* [ ] Quiz generation
+* [ ] Persistent storage
+* [ ] User authentication
+
+---
+
+## Getting Started
+
+### Frontend
+
+```bash
 cd frontend
 npm install
 npm run dev
+```
 
-The local application will be available at:
+### Backend
 
-http://localhost:5173
-Roadmap
- Initialize the React and TypeScript frontend
- Create the landing page
- Add YouTube URL input and validation
- Build the backend API
- Retrieve video transcript data
- Add AI-generated summaries
- Add timestamp-based question answering
- Add automated tests
- Configure GitHub Actions
- Deploy the application
+```bash
+cd backend
+npm install
+npx tsx src/server.ts
+```
+
+---
+
+## Design Principles
+
+This project emphasizes clean software engineering practices:
+
+* Small, focused GitHub Issues
+* Feature branches for every task
+* Small pull requests
+* Modular architecture
+* Separation of concerns
+* Reusable utility and service layers
+* Type-safe APIs with TypeScript
+
+---
+
+## Future Vision
+
+The long-term goal is to build a complete AI learning platform where users can:
+
+* Learn from any YouTube video
+* Ask questions about video content
+* Generate summaries instantly
+* Review key concepts
+* Practice with AI-generated quizzes
+* Build structured learning notes
