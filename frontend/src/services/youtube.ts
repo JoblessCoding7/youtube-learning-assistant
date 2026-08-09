@@ -10,7 +10,9 @@ export async function analyzeVideo(videoUrl: string) {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to analyze video");
+    const errorData = await response.json();
+
+    throw new Error(errorData.message || "Failed to analyze video");
   }
 
   return response.json();
