@@ -1,7 +1,22 @@
+function isValidVideoId(videoId: string): boolean {
+  return /^[A-Za-z0-9_-]{11}$/.test(videoId);
+}
+
+function isYouTubeHostname(hostname: string): boolean {
+  return (
+    hostname === "youtube.com" ||
+    hostname === "www.youtube.com" ||
+    hostname === "youtu.be"
+  );
+}
+
 export function normalizeUrl(url: string) {
   const trimmedUrl = url.trim();
 
-  if (!trimmedUrl.startsWith("http://") && !trimmedUrl.startsWith("https://")) {
+  if (
+    !trimmedUrl.startsWith("http://") &&
+    !trimmedUrl.startsWith("https://")
+  ) {
     return `https://${trimmedUrl}`;
   }
 
@@ -12,11 +27,7 @@ export function isValidYouTubeUrl(url: string) {
   try {
     const parsedUrl = new URL(url);
 
-    return (
-      parsedUrl.hostname === "youtube.com" ||
-      parsedUrl.hostname === "www.youtube.com" ||
-      parsedUrl.hostname === "youtu.be"
-    );
+    return isYouTubeHostname(parsedUrl.hostname);
   } catch {
     return false;
   }
@@ -26,18 +37,22 @@ export function extractVideoId(url: string): string | null {
   try {
     const parsedUrl = new URL(url);
 
-    if (parsedUrl.hostname === "youtu.be") {
-      return parsedUrl.pathname.slice(1);
-    }
+    let videoId: string | null = null;
 
-    if (
+    if (parsedUrl.hostname === "youtu.be") {
+      videoId = parsedUrl.pathname.slice(1).trim() || null;
+    } else if (
       parsedUrl.hostname === "youtube.com" ||
       parsedUrl.hostname === "www.youtube.com"
     ) {
-      return parsedUrl.searchParams.get("v");
+      videoId = parsedUrl.searchParams.get("v")?.trim() || null;
     }
 
-    return null;
+    if (!videoId || !isValidVideoId(videoId)) {
+      return null;
+    }
+
+    return videoId;
   } catch {
     return null;
   }
