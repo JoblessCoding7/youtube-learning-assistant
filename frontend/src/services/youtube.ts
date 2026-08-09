@@ -1,4 +1,22 @@
-export async function analyzeVideo(videoUrl: string) {
+export type TranscriptItem = {
+  text: string;
+  duration: number;
+  offset: number;
+  lang?: string;
+};
+
+export type AnalyzeVideoResponse = {
+  success: boolean;
+  videoUrl: string;
+  videoId: string;
+  transcript: TranscriptItem[];
+  summary: string;
+  keyTakeaways: string[];
+};
+
+export async function analyzeVideo(
+  videoUrl: string,
+): Promise<AnalyzeVideoResponse> {
   const response = await fetch("http://localhost:3000/api/analyze", {
     method: "POST",
     headers: {
@@ -12,7 +30,9 @@ export async function analyzeVideo(videoUrl: string) {
   if (!response.ok) {
     const errorData = await response.json();
 
-    throw new Error(errorData.message || "Failed to analyze video");
+    throw new Error(
+      errorData.message || "Failed to analyze video",
+    );
   }
 
   return response.json();

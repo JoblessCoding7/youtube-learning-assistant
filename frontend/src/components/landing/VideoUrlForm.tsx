@@ -1,13 +1,22 @@
 import { Button } from "@/components/ui/button";
-import { analyzeVideo } from "@/services/youtube";
 import { isValidYouTubeUrl } from "@/utils/validation";
 import { useState } from "react";
+import { extractVideoId } from "@/utils/youtubeUrl";
+
+import {
+  analyzeVideo,
+  type AnalyzeVideoResponse,
+} from "@/services/youtube";
 
 type VideoUrlFormProps = {
-  onAnalysisComplete: (result: any) => void;
+  onVideoSelected: (videoId: string) => void;
+  onAnalysisComplete: (result: AnalyzeVideoResponse) => void;
 };
 
-function VideoUrlForm({ onAnalysisComplete }: VideoUrlFormProps) {
+function VideoUrlForm({
+  onVideoSelected,
+  onAnalysisComplete,
+}: VideoUrlFormProps) {
   const [videoUrl, setVideoUrl] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -26,6 +35,12 @@ function VideoUrlForm({ onAnalysisComplete }: VideoUrlFormProps) {
 
     try {
       setIsLoading(true);
+
+      const videoId = extractVideoId(videoUrl);
+
+      if (videoId) {
+        onVideoSelected(videoId);
+      }
 
       const result = await analyzeVideo(videoUrl);
 

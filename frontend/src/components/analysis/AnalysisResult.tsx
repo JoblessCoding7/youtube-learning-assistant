@@ -1,7 +1,9 @@
 import { Sparkles, CheckCircle2 } from "lucide-react";
 
+import type { AnalyzeVideoResponse } from "@/services/youtube";
+
 type AnalysisResultProps = {
-  analysis: any;
+  analysis: AnalyzeVideoResponse;
 };
 
 function AnalysisResult({ analysis }: AnalysisResultProps) {
