@@ -5,7 +5,9 @@ import {
   isValidYouTubeUrl,
   normalizeUrl,
 } from "../utils/youtube.js";
+
 import { getTranscript } from "../service/transcriptService.js";
+import { generateSummary } from "../service/aiService.js";
 
 import {
   YoutubeTranscriptDisabledError,
@@ -44,15 +46,10 @@ analysisRouter.post("/analyze", async (req, res) => {
     });
   }
 
-  try {
-    const transcript = await getTranscript(videoId);
+  let transcript;
 
-    return res.status(200).json({
-      videoUrl: normalizedUrl,
-      success: true,
-      videoId,
-      transcript,
-    });
+  try {
+    transcript = await getTranscript(videoId);
   } catch (error) {
     if (
       error instanceof YoutubeTranscriptVideoUnavailableError ||
@@ -75,6 +72,27 @@ analysisRouter.post("/analyze", async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Failed to retrieve transcript.",
+    });
+  }
+
+  const transcriptText = transcript.map((item) => item.text).join(" ");
+
+  try {
+    const summary = await generateSummary(transcriptText);
+
+    return res.status(200).json({
+      success: true,
+      videoUrl: normalizedUrl,
+      videoId,
+      transcript,
+      summary,
+    });
+  } catch (error) {
+    console.error("Failed to generate summary:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to generate AI summary.",
     });
   }
 });
