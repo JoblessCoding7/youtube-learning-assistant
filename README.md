@@ -20,10 +20,10 @@ Users simply paste a YouTube URL, and the application retrieves the video's tran
 * Transcript retrieval from YouTube
 * REST API architecture
 * Modular service-based backend structure
+* AI-generated summaries
 
 ### 🚧 Planned
 
-* AI-generated summaries
 * Interactive AI chat about video content
 * Quiz generation
 * Key topics extraction
